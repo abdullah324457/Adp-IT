@@ -1,1 +1,155 @@
-Adp it
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADP IT Class Website</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
+    }
+    header {
+      background: #123b70;
+      color: white;
+      text-align: center;
+      padding: 28px 12px;
+    }
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; }
+    main { max-width: 850px; margin: auto; padding: 16px; }
+    h2 { color: #123b70; }
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .subjects button {
+      padding: 15px 8px;
+      border: 0;
+      border-radius: 10px;
+      background: white;
+      color: #123b70;
+      font-size: 15px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px #0001;
+      cursor: pointer;
+    }
+    .subjects button.active {
+      background: #123b70;
+      color: white;
+    }
+    .lecture {
+      background: white;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 10px;
+      border-left: 4px solid #2878c8;
+    }
+    .lecture p { line-height: 1.5; }
+    .empty { color: #64748b; }
+    footer {
+      text-align: center;
+      padding: 22px;
+      color: #64748b;
+    }
+    @media (max-width: 360px) {
+      .subjects { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ADP IT Class</h1>
+    <p>Lectures, Notes and Class Information</p>
+  </header>
+
+  <main>
+    <h2>Our Subjects</h2>
+    <p>Select a subject to view its lectures.</p>
+
+    <div class="subjects" id="subjects"></div>
+
+    <h2 id="subjectTitle">English Functional</h2>
+    <div id="lectures"></div>
+  </main>
+
+  <footer>ADP IT Class Website</footer>
+
+  <script>
+    const subjects = [
+      "English Functional",
+      "Programming",
+      "Networking",
+      "Database",
+      "Mathematics",
+      "Computer Fundamentals"
+    ];
+
+    const lectures = {
+      "English Functional": [],
+      "Programming": [],
+      "Networking": [],
+      "Database": [],
+      "Mathematics": [],
+      "Computer Fundamentals": []
+    };
+
+    const subjectButtons = document.getElementById("subjects");
+    const lectureArea = document.getElementById("lectures");
+    const subjectTitle = document.getElementById("subjectTitle");
+
+    function showSubject(subject, button) {
+      subjectTitle.textContent = subject;
+
+      document.querySelectorAll(".subjects button")
+        .forEach(btn => btn.classList.remove("active"));
+
+      button.classList.add("active");
+      lectureArea.replaceChildren();
+
+      if (lectures[subject].length === 0) {
+        const message = document.createElement("p");
+        message.className = "empty";
+        message.textContent =
+          "No lectures added yet. Lecture details will appear here.";
+        lectureArea.appendChild(message);
+        return;
+      }
+
+      lectures[subject].forEach(lecture => {
+        const card = document.createElement("article");
+        card.className = "lecture";
+
+        const title = document.createElement("h3");
+        title.textContent = lecture.title;
+        card.appendChild(title);
+
+        ["Date", "Time", "Lecturer", "Notes"].forEach(label => {
+          const p = document.createElement("p");
+          p.textContent = label + ": " + lecture[label.toLowerCase()];
+          card.appendChild(p);
+        });
+
+        lectureArea.appendChild(card);
+      });
+    }
+
+    subjects.forEach((subject, index) => {
+      const button = document.createElement("button");
+      button.textContent = subject;
+      button.type = "button";
+      button.addEventListener("click", () =>
+        showSubject(subject, button)
+      );
+      subjectButtons.appendChild(button);
+
+      if (index === 0) showSubject(subject, button);
+    });
+  </script>
+</body>
+</html>
