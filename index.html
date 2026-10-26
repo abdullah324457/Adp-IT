@@ -131,10 +131,38 @@ subjects.forEach((subject, index) => {
   if (index === 0) {
     button.classList.add("active");
     subjectTitle.textContent = subject.name;
-    const message = document.createElement("p");
-    message.className = "empty";
-    message.textContent = "No lectures added yet. Lecture details will appear here.";
-    lectureArea.appendChild(message);
+lectureArea.replaceChildren();
+
+const items = lectureData[subject.name] || [];
+
+if (items.length === 0) {
+  const message = document.createElement("p");
+  message.className = "empty";
+  message.textContent = "No lectures added yet.";
+  lectureArea.appendChild(message);
+} else {
+  items.forEach(lecture => {
+    const card = document.createElement("div");
+    card.className = "lecture";
+
+    const title = document.createElement("h3");
+    title.textContent = lecture.title;
+    card.appendChild(title);
+
+    [
+      ["Lecturer", lecture.lecturer],
+      ["Date", lecture.date],
+      ["Time", lecture.time],
+      ["Notes", lecture.notes]
+    ].forEach(([label, value]) => {
+      const p = document.createElement("p");
+      p.textContent = label + ": " + value;
+      card.appendChild(p);
+    });
+
+    lectureArea.appendChild(card);
+  });
+}
   }
 });
 </script>
