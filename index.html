@@ -2,170 +2,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADP IT Class Website</title>
-<style>
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-  color: #172033;
-}
-header {
-  background: #123b70;
-  color: white;
-  text-align: center;
-  padding: 28px 12px;
-}
-main { max-width: 850px; margin: auto; padding: 16px; }
-h2 { color: #123b70; }
-.subjects {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.subject {
-  padding: 10px;
-  border: 0;
-  border-radius: 10px;
-  background: white;
-  color: #123b70;
-  font-size: 15px;
-  font-weight: bold;
-  box-shadow: 0 2px 6px #0001;
-  cursor: pointer;
-}
-.subject.active { background: #dbeafe; }
-.subject img {
-  display: block;
-  width: 100%;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 7px;
-  margin-bottom: 8px;
-}
-.empty {
-  background: white;
-  padding: 16px;
-  border-radius: 10px;
-  color: #64748b;
-}
-footer { text-align: center; padding: 22px; color: #64748b; }
-@media (max-width: 360px) {
-  .subjects { grid-template-columns: 1fr; }
-}
-</style>
-</head>
-<body>
-<header>
-  <h1>ADP IT Class</h1>
-  <p>Lectures, Notes and Class Information</p>
-</header>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADP IT Class</title>
 
-<main>
-  <h2>Our Subjects</h2>
-  <p>Choose a subject to view its lectures.</p>
-  <div class="subjects" id="subjects"></div>
-  <h2 id="subjectTitle">Mathematics</h2>
-  <div id="lectures"></div>
-</main>
-
-<footer>ADP IT Class Website</footer>
-
-<script>
-const subjects = [ const lectureData = {
-  "ICT": [
-    {
-      title: "IoT",
-      lecturer: "RAEES",
-      date: "10-10-2026",
-      time: "7:00 AM",
-      notes: "Internet of Things (IoT)"
+  <style>
+    * {
+      box-sizing: border-box;
     }
-  ]
-};
-  { name: "Mathematics", image: "" },
-  { name: "ICT", image: "ict.jpg" },
-  { name: "English Functional", image: "" },
-  { name: "English Speaking", image: "" },
-  { name: "Pakistan Studies", image: "" },
-  { name: "Applied Physics", image: "" }
-];
 
-const subjectButtons = document.getElementById("subjects");
-const lectureArea = document.getElementById("lectures");
-const subjectTitle = document.getElementById("subjectTitle");
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f3f9;
+      color: #202938;
+    }
 
-subjects.forEach((subject, index) => {
-  const button = document.createElement("button");
-  button.className = "subject";
-  button.type = "button";
+    header {
+      background: #183e70;
+      color: white;
+      text-align: center;
+      padding: 55px 15px;
+    }
 
-  if (subject.image) {
-    const img = document.createElement("img");
-    img.src = subject.image;
-    img.alt = subject.name + " picture";
-    button.appendChild(img);
-  }
+    header h1 {
+      font-size: 36px;
+      margin: 15px 0 25px;
+    }
 
-  const label = document.createElement("div");
-  label.textContent = subject.name;
-  button.appendChild(label);
+    header p {
+      font-size: 19px;
+    }
 
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".subject").forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
-    subjectTitle.textContent = subject.name;
-    lectureArea.replaceChildren();
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 25px 16px;
+    }
 
-    const message = document.createElement("p");
-    message.className = "empty";
-    message.textContent = "No lectures added yet. Lecture details will appear here.";
-    lectureArea.appendChild(message);
-  });
+    h2 {
+      color: #183e70;
+    }
 
-  subjectButtons.appendChild(button);
+    .subjects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin: 25px 0;
+    }
 
-  if (index === 0) {
-    button.classList.add("active");
-    subjectTitle.textContent = subject.name;
-lectureArea.replaceChildren();
+    .subject {
+      background: white;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: left;
+      font-size: 18px;
+      font-weight: bold;
+      color: #183e70;
+      cursor: pointer;
+      min-height: 70px;
+    }
 
-const items = lectureData[subject.name] || [];
+    .subject.active {
+      border-color: #183e70;
+      background: #e1ebfa;
+    }
 
-if (items.length === 0) {
-  const message = document.createElement("p");
-  message.className = "empty";
-  message.textContent = "No lectures added yet.";
-  lectureArea.appendChild(message);
-} else {
-  items.forEach(lecture => {
-    const card = document.createElement("div");
-    card.className = "lecture";
+    .subject img {
+      display: block;
+      width: 100%;
+      max-height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
 
-    const title = document.createElement("h3");
-    title.textContent = lecture.title;
-    card.appendChild(title);
+    #lectureArea {
+      margin-top: 20px;
+    }
 
-    [
-      ["Lecturer", lecture.lecturer],
-      ["Date", lecture.date],
-      ["Time", lecture.time],
-      ["Notes", lecture.notes]
-    ].forEach(([label, value]) => {
-      const p = document.createElement("p");
-      p.textContent = label + ": " + value;
-      card.appendChild(p);
+    .lecture {
+      background: white;
+      padding: 18px;
+      margin: 15px 0;
+      border-radius: 12px;
+      border-left: 5px solid #183e70;
+      overflow-wrap: anywhere;
+    }
+
+    .lecture h3 {
+      color: #183e70;
+      margin-top: 0;
+    }
+
+    .lecture p {
+      line-height: 1.6;
+    }
+
+    .empty {
+      background: white;
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    footer {
+      text-align: center;
+      color: #69778a;
+      padding: 35px 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>ADP IT Class</h1>
+    <p>Lectures, Notes and Class Information</p>
+  </header>
+
+  <main>
+    <h2>Our Subjects</h2>
+    <p>Choose a subject to view its lectures.</p>
+
+    <div class="subjects" id="subjects"></div>
+
+    <section id="lectureSection" hidden>
+      <h2 id="subjectTitle"></h2>
+      <div id="lectureArea"></div>
+    </section>
+  </main>
+
+  <footer>
+    ADP IT Class Website
+  </footer>
+
+  <script>
+    const subjects = [
+      { name: "Mathematics" },
+      { name: "ICT", image: "ict.jpg" },
+      { name: "English Functional" },
+      { name: "English Speaking" },
+      { name: "Pakistan Studies" },
+      { name: "Applied Physics" }
+    ];
+
+    const lectureData = {
+      "ICT": [
+        {
+          title: "IoT",
+          lecturer: "RAEES",
+          date: "10-10-2026",
+          time: "7:00 AM",
+          notes: "Internet of Things (IoT)"
+        }
+      ]
+    };
+
+    const subjectsContainer =
+      document.getElementById("subjects");
+
+    const lectureSection =
+      document.getElementById("lectureSection");
+
+    const subjectTitle =
+      document.getElementById("subjectTitle");
+
+    const lectureArea =
+      document.getElementById("lectureArea");
+
+    function showSubject(subject, button) {
+      document.querySelectorAll(".subject").forEach(item => {
+        item.classList.remove("active");
+      });
+
+      button.classList.add("active");
+      subjectTitle.textContent = subject.name;
+      lectureSection.hidden = false;
+      lectureArea.replaceChildren();
+
+      const lectures = lectureData[subject.name] || [];
+
+      if (lectures.length === 0) {
+        const message = document.createElement("p");
+        message.className = "empty";
+        message.textContent = "No lectures added yet.";
+        lectureArea.appendChild(message);
+        return;
+      }
+
+      lectures.forEach(lecture => {
+        const card = document.createElement("article");
+        card.className = "lecture";
+
+        const title = document.createElement("h3");
+        title.textContent = lecture.title;
+        card.appendChild(title);
+
+        [
+          ["Lecturer", lecture.lecturer],
+          ["Date", lecture.date],
+          ["Time", lecture.time],
+          ["Notes", lecture.notes]
+        ].forEach(([label, value]) => {
+          const p = document.createElement("p");
+          p.textContent = label + ": " + value;
+          card.appendChild(p);
+        });
+
+        lectureArea.appendChild(card);
+      });
+    }
+
+    subjects.forEach(subject => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "subject";
+
+      if (subject.image) {
+        const img = document.createElement("img");
+        img.src = subject.image;
+        img.alt = subject.name + " picture";
+
+        img.onerror = function() {
+          img.remove();
+        };
+
+        button.appendChild(img);
+      }
+
+      const label = document.createElement("span");
+      label.textContent = subject.name;
+      button.appendChild(label);
+
+      button.addEventListener("click", () => {
+        showSubject(subject, button);
+      });
+
+      subjectsContainer.appendChild(button);
     });
+  </script>
 
-    lectureArea.appendChild(card);
-  });
-}
-  }
-});
-</script>
 </body>
 </html>
-
